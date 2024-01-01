@@ -14,54 +14,51 @@
 // console.log("社会可能会因此陷入危机，比如大量的犯罪或者经历社会动荡");
 // console.log("测试开始");
 
-const people = 100;
-const turn = 1000000;
+// const people = 100;
+// const turn = 1000000;
 
-const experiment = function () {
+function experiment(size: number, times: number) {
   // 首先，把所有人放进一个数组里并给每个人发100元
-  const wealth = new Array(people);
-  wealth.fill(100);
+  const wealth = new Array(size).fill(100);
+
   // 第二步，开始进行给钱的轮次
-  for (let a = 0; a < turn; a++) {
+  const hasMoney = new Array(size).fill(false);
+  for (let i = 0; i < times; i++) {
     // 首先要判断这个人有没有钱
-    const hasMoney = new Array(people);
-    hasMoney.fill(false);
-    for (let i = 0; i < people; i++) {
-      wealth[i] > 0 ? (hasMoney[i] = true) : (hasMoney[i] = false);
+    for (let j = 0; j < size; j++) {
+      hasMoney[j] = wealth[j] > 0;
     }
-    // console.log('>>> hasMoney', hasMoney)
+
     // 每个人在这一轮中，依次开始进行给钱的操作
-    for (let p = 0; p < people; p++) {
+    for (let j = 0; j < size; j++) {
       // 如果这个人有钱，则需要给除了自己以外的任意一个人1元
-      let receive = p;
-      // console.log('>>> receive', receive);
-      if (hasMoney[p]) {
-        do {
-          receive = Math.trunc(Math.random() * people);
-          // console.log('>>>receive.random', receive)
-        } while (receive === p);
-        wealth[p]--;
-        wealth[receive]++;
+      if (hasMoney[j]) {
+        let receiver = j;
+        while (receiver === j) {
+          receiver = Math.trunc(Math.random() * size);
+        }
+        wealth[j]--;
+        wealth[receiver]++;
       }
     }
   }
   return wealth;
-};
+}
 
-function calculateGini(wealth: number[]) {
+function calculateGini(wealthArray: number[]) {
   let sumOfDifferences = 0;
   let sumOfWealth = 0;
-  const N = wealth.length;
+  const N = wealthArray.length;
   for (let i = 0; i < N; i++) {
     for (let j = 0; j < N; j++) {
-      sumOfDifferences += Math.abs(wealth[i] - wealth[j]);
+      sumOfDifferences += Math.abs(wealthArray[i] - wealthArray[j]);
     }
-    sumOfWealth += wealth[i];
+    sumOfWealth += wealthArray[i];
   }
   return sumOfDifferences / (2 * N * sumOfWealth);
 }
 
-console.log(">>>基尼系数是：", calculateGini(experiment()));
+console.log(">>>基尼系数是：", calculateGini(experiment(100, 1000000)));
 
 // Gini = ｜差值｜之和 / 2 * 人数 * 财富总和
 
