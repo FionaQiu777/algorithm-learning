@@ -48,19 +48,20 @@ const experiment = function () {
   return wealth;
 };
 
-const calculateGini = (wealth = experiment()) => {
+function calculateGini(wealth: number[]) {
   let sumOfDifferences = 0;
   let sumOfWealth = 0;
-  for (let b = 0; b < people; b++) {
-    for (let c = 0; c < people; c++) {
-      sumOfDifferences += Math.abs(wealth[b] - wealth[c]);
+  const N = wealth.length;
+  for (let i = 0; i < N; i++) {
+    for (let j = 0; j < N; j++) {
+      sumOfDifferences += Math.abs(wealth[i] - wealth[j]);
     }
-    sumOfWealth += wealth[b];
+    sumOfWealth += wealth[i];
   }
-  return sumOfDifferences / (2 * people * sumOfWealth);
-};
+  return sumOfDifferences / (2 * N * sumOfWealth);
+}
 
-console.log(">>>基尼系数是：", calculateGini());
+console.log(">>>基尼系数是：", calculateGini(experiment()));
 
 // Gini = ｜差值｜之和 / 2 * 人数 * 财富总和
 
