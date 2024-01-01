@@ -14,26 +14,22 @@
 // console.log("社会可能会因此陷入危机，比如大量的犯罪或者经历社会动荡");
 // console.log("测试开始");
 
-let people = 100;
-let turn = 1000000;
+const people = 100;
+const turn = 1000000;
 
-function experiment() {
+const experiment = function () {
   // 首先，把所有人放进一个数组里并给每个人发100元
-  let wealth = new Array(people);
+  const wealth = new Array(people);
   wealth.fill(100);
-
-  // console.log(wealth);
   // 第二步，开始进行给钱的轮次
   for (let a = 0; a < turn; a++) {
     // 首先要判断这个人有没有钱
-    let hasMoney = new Array(people);
+    const hasMoney = new Array(people);
     hasMoney.fill(false);
-    // console.log(hasMoney);
     for (let i = 0; i < people; i++) {
       wealth[i] > 0 ? (hasMoney[i] = true) : (hasMoney[i] = false);
     }
     // console.log('>>> hasMoney', hasMoney)
-
     // 每个人在这一轮中，依次开始进行给钱的操作
     for (let p = 0; p < people; p++) {
       // 如果这个人有钱，则需要给除了自己以外的任意一个人1元
@@ -49,6 +45,10 @@ function experiment() {
       }
     }
   }
+  return wealth;
+};
+
+const calculateGini = (wealth = experiment()) => {
   let sumOfDifferences = 0;
   let sumOfWealth = 0;
   for (let b = 0; b < people; b++) {
@@ -57,10 +57,17 @@ function experiment() {
     }
     sumOfWealth += wealth[b];
   }
-  let jini = sumOfDifferences / (2 * people * sumOfWealth);
-  console.log(">>> 基尼:", jini);
-}
+  return sumOfDifferences / (2 * people * sumOfWealth);
+};
 
-experiment();
+console.log(">>>基尼系数是：", calculateGini());
 
 // Gini = ｜差值｜之和 / 2 * 人数 * 财富总和
+
+// 这个实验共计是几个动作？
+// 1. 执行 turn 轮
+// 2. 在每一轮内，进行以下动作：
+//  首先，判断每个人是否有钱，如果这个人有钱则需要对外给1元
+//  其次，确定每个人需要把钱给谁
+//  最后，执行给钱的动作（增加和减去对应人的钱）
+//
