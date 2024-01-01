@@ -58,7 +58,7 @@ function calculateGini(wealthArray: number[]) {
   return sumOfDifferences / (2 * N * sumOfWealth);
 }
 
-console.log(">>>基尼系数是：", calculateGini(experiment(100, 1000000)));
+// console.log(">>>基尼系数是：", calculateGini(experiment(100, 1000000)));
 
 // Gini = ｜差值｜之和 / 2 * 人数 * 财富总和
 
@@ -68,4 +68,29 @@ console.log(">>>基尼系数是：", calculateGini(experiment(100, 1000000)));
 //  首先，判断每个人是否有钱，如果这个人有钱则需要对外给1元
 //  其次，确定每个人需要把钱给谁
 //  最后，执行给钱的动作（增加和减去对应人的钱）
-//
+
+// Code from JunJun
+function main(size: number, times: number) {
+  console.log("一个社会的基尼系数是一个在 0~1 之间的小数");
+  console.log("基尼系数为0代表所有人的财富完全一样");
+  console.log("基尼系数为1代表有1个人掌握了全社会的财富");
+  console.log(
+    "基尼系数越小，代表社会财富分布越均衡；越大则代表财富分布越不均衡",
+  );
+  console.log("在2022年，世界各国的平均基尼系数为 0.44");
+  console.log("目前普遍认为，当基尼系数到达 0.5 时");
+  console.log("就意味着社会贫富差距非常大，分布非常不均匀");
+  console.log("社会可能会因此陷入危机，比如大量的犯罪或者经历社会动荡");
+
+  console.log(">>> 测试开始");
+  const startTime = Date.now();
+  console.log("人数: " + size);
+  console.log("轮数: " + times);
+  console.log(">>> 测试结束");
+  console.log(">>> 基尼系数为：", calculateGini(experiment(size, times)));
+  const duration = (Date.now() - startTime) / 1000;
+  console.log(">>> duration", duration + "s");
+}
+const size = +process.argv[2] || 100;
+const times = +process.argv[3] || 100;
+main(size, times);
