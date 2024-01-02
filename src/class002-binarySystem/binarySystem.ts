@@ -45,4 +45,4 @@ function printBinary(num: number) {
 }
 
 const inputNum = +process.argv[2] || 2;
-console.log(printBinary(inputNum));
+console.log("inputNum >>>>", printBinary(inputNum));
